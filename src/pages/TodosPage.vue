@@ -2,7 +2,18 @@
   <q-page class="page">
     <div class="content-wrapper">
       <h1>Todos</h1>
-      <div v-for="(item, index) in todos" :key="index">{{ item.title }}</div>
+      <div v-if="todos.length">
+        <div
+          @click="toggleTodo(todo)"
+          class="todo"
+          :class="{ 'todo--completed': todo.completed }"
+          v-for="(todo, index) in todos"
+          :key="index"
+        >
+          {{ todo.title }}
+        </div>
+      </div>
+      <div v-if="todos.length === 0 && !isFirstRender">Er zijn geen todo's</div>
     </div>
   </q-page>
 </template>
@@ -10,20 +21,33 @@
 <script lang="ts">
 import { api } from 'boot/axios';
 import { Todo } from 'components/models';
-import { defineComponent, ref, Ref } from 'vue';
+
+import { defineComponent, onBeforeMount, ref, Ref } from 'vue';
 
 export default defineComponent({
   setup() {
-    const todos: Ref<Array<Todo>> = ref([
-      { id: 1, title: 'Todo 1', completed: false },
-    ]);
+    const todos: Ref<Array<Todo>> = ref([]);
+    const isFirstRender = ref(true);
 
-    api.get('/todos').then((response) => {
-      console.log(response.data);
+    onBeforeMount(async () => {
+      const response = await api.get('/todos');
       todos.value = response.data;
+      isFirstRender.value = false;
     });
 
-    return { todos };
+    const toggleTodo = async (todo: Todo) => {
+      todo.completed = !todo.completed;
+      const response = await api.put(`/todos/${todo.id}`, todo);
+      const changedTodo = response.data;
+      todos.value = todos.value.map((t) => {
+        if (t.id === changedTodo.id) {
+          return response.data;
+        }
+        return t;
+      });
+    };
+
+    return { todos, isFirstRender, toggleTodo };
   },
 });
 </script>
@@ -33,5 +57,23 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: flex-start;
+}
+
+.todo {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  margin: 0 0 1em;
+  padding: 1em;
+  cursor: pointer;
+  user-select: none;
+}
+
+.todo--completed {
+  background-color: #f5f5f5;
+  border-color: #ddd;
+  color: #999;
+  text-decoration: line-through;
 }
 </style>
