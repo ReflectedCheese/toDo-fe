@@ -14,6 +14,7 @@
         </div>
       </div>
       <div v-if="todos.length === 0 && !isFirstRender">Er zijn geen todo's</div>
+      <q-btn @click="onAdd()" color="primary" label="Add" />
     </div>
   </q-page>
 </template>
@@ -21,33 +22,35 @@
 <script lang="ts">
 import { api } from 'boot/axios';
 import { Todo } from 'components/models';
-
-import { defineComponent, onBeforeMount, ref, Ref } from 'vue';
+import { ROUTE_NAMES } from 'src/router/routes';
+import { todos, updateTodo, setTodos } from 'src/services/todos.service';
+import { defineComponent, onBeforeMount, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
   setup() {
-    const todos: Ref<Array<Todo>> = ref([]);
+    const router = useRouter();
     const isFirstRender = ref(true);
 
     onBeforeMount(async () => {
       const response = await api.get('/todos');
-      todos.value = response.data;
+      if (response.status === 200) {
+        setTodos(response.data);
+      }
+
       isFirstRender.value = false;
     });
 
     const toggleTodo = async (todo: Todo) => {
       todo.completed = !todo.completed;
-      const response = await api.put(`/todos/${todo.id}`, todo);
-      const changedTodo = response.data;
-      todos.value = todos.value.map((t) => {
-        if (t.id === changedTodo.id) {
-          return response.data;
-        }
-        return t;
-      });
+      updateTodo(todo);
     };
 
-    return { todos, isFirstRender, toggleTodo };
+    const onAdd = () => {
+      router.push({ name: ROUTE_NAMES.TODOS.ADD });
+    };
+
+    return { todos, isFirstRender, toggleTodo, onAdd };
   },
 });
 </script>
