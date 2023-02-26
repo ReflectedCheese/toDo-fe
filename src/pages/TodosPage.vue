@@ -4,13 +4,18 @@
       <h1>Todos</h1>
       <div v-if="todos.length">
         <div
-          @click="toggleTodo(todo)"
+          @click="onTodoClick(todo.id.toString())"
           class="todo"
           :class="{ 'todo--completed': todo.completed }"
           v-for="(todo, index) in todos"
           :key="index"
         >
+          <q-checkbox
+            :model-value="todo.completed"
+            @update:model-value="toggleTodo(todo)"
+          />
           {{ todo.title }}
+          <span v-if="todo.description"> - {{ todo.description }}</span>
         </div>
       </div>
       <div v-if="todos.length === 0 && !isFirstRender">Er zijn geen todo's</div>
@@ -50,12 +55,16 @@ export default defineComponent({
       router.push({ name: ROUTE_NAMES.TODOS.ADD });
     };
 
-    return { todos, isFirstRender, toggleTodo, onAdd };
+    const onTodoClick = (id: string) => {
+      router.push({ name: ROUTE_NAMES.TODOS.EDIT, params: { id } });
+    };
+
+    return { todos, isFirstRender, toggleTodo, onAdd, onTodoClick };
   },
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .page {
   display: flex;
   justify-content: center;

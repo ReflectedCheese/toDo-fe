@@ -2,29 +2,36 @@
   <q-page class="page">
     <div class="content-wrapper">
       <h1>Add Todo</h1>
-      <q-input outlined v-model="title" label="Add New Todo" />
-      <q-btn @click="onAdd()" color="primary" label="Save" />
+      <q-input outlined label="Title" v-model="title" />
+      <q-input outlined label="Description" v-model="description" />
+      <div>
+        <q-btn @click="onAdd()" color="primary" label="Save" />
+      </div>
     </div>
   </q-page>
 </template>
 
 <script lang="ts">
-import { api } from 'src/boot/axios';
 import { defineComponent, ref } from 'vue';
+import { createTodo } from 'src/services/todos.service';
 
 export default defineComponent({
   setup() {
     const title = ref('');
+    const description = ref('');
+
     const onAdd = async () => {
-      const response = await api.post('/todos', { title: title.value });
-      console.log(response.data);
+      if (title.value) {
+        createTodo(title.value, description.value);
+        alert(`${title.value} added succesfully`);
+      }
     };
-    return { title, onAdd };
+    return { title, description, onAdd };
   },
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .page {
   display: flex;
   justify-content: center;

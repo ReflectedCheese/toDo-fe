@@ -14,4 +14,18 @@ const updateTodo = async (todo: Todo) => {
   }
 };
 
-export { todos, setTodos, updateTodo };
+const createTodo = (title: string, description: string) => {
+  api.post('/todos', { title, description });
+};
+
+const getTodo = async (id: string): Promise<Todo> => {
+  const response = await api.get(`/todos/${id}`);
+  return response.data;
+};
+
+const deleteTodo = async (id: string) => {
+  const response = await api.delete(`/todos/${id}`);
+  return response.data;
+};
+
+export { todos, setTodos, updateTodo, createTodo, getTodo, deleteTodo };

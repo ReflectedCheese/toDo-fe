@@ -4,6 +4,7 @@ export const ROUTE_NAMES = {
   TODOS: {
     LIST: 'todos-list',
     ADD: 'add-todo',
+    EDIT: 'edit-todo',
   },
 };
 
@@ -21,6 +22,11 @@ const routes: RouteRecordRaw[] = [
         path: '/todo/add',
         name: ROUTE_NAMES.TODOS.ADD,
         component: () => import('src/pages/AddTodosPage.vue'),
+      },
+      {
+        path: 'todo/:id',
+        name: ROUTE_NAMES.TODOS.EDIT,
+        component: () => import('src/pages/TodoDetailPage.vue'),
       },
     ],
   },
