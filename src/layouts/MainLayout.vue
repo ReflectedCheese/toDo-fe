@@ -1,24 +1,16 @@
 <template>
-  <q-layout view="hHh lpR fFf">
-    <q-header elevated class="bg-primary text-white">
+  <q-layout view="hHh lpR fFf" class="background">
+
       <q-toolbar>
         <q-toolbar-title class="title" @click="onHomeClick()">
           Todo App
         </q-toolbar-title>
       </q-toolbar>
-    </q-header>
+
 
     <q-page-container>
       <router-view />
     </q-page-container>
-
-    <q-footer elevated class="bg-grey-8 text-white">
-      <q-toolbar>
-        <q-toolbar-title>
-          <div>Title</div>
-        </q-toolbar-title>
-      </q-toolbar>
-    </q-footer>
   </q-layout>
 </template>
 
@@ -44,5 +36,21 @@ export default defineComponent({
 <style lang="scss" scoped>
 .title {
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  font-size: 30px;
+  font-weight: 600;
+  color: white;
+  margin-top: 1rem;
+}
+
+
+
+.header {
+background-color: transparent;
+}
+
+.background {
+  background: linear-gradient(to bottom, #68eacc 0%, #497be8 100%);
 }
 </style>

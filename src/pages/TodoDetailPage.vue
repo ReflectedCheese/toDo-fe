@@ -1,7 +1,7 @@
 <template>
   <q-page class="page">
     <div v-if="todo" class="content-wrapper">
-      <h1>Edit Todo</h1>
+      <div class="header">Edit Todo</div>
       <q-input outlined label="Title" v-model="todo.title" />
       <q-input outlined label="Description" v-model="todo.description" />
       <q-checkbox v-model="todo.completed" label="Completed" />
@@ -61,6 +61,14 @@ export default defineComponent({
   gap: 1rem;
 }
 
+.q-checkbox {
+  margin-left: -0.5rem;
+}
+.header {
+  font-size: 30px;
+  font-weight: 600;
+}
+
 .todo {
   background-color: #fff;
   border: 1px solid #ccc;
@@ -77,6 +85,16 @@ export default defineComponent({
   border-color: #ddd;
   color: #999;
   text-decoration: line-through;
+}
+
+.content-wrapper {
+  background: #fff;
+  max-width: 400px;
+  width: 100%;
+  margin: 120px auto;
+  padding: 25px;
+  border-radius: 5px;
+  box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
 }
 
 .buttons {

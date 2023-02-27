@@ -1,7 +1,7 @@
 <template>
   <q-page class="page">
     <div class="content-wrapper">
-      <h1>Todos</h1>
+      <div class="header">Todos</div>
       <div v-if="todos.length">
         <div
           @click="onTodoClick(todo.id.toString())"
@@ -69,6 +69,30 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: flex-start;
+}
+
+body {
+  width: 100%;
+  height: 100vh;
+  /* overflow: hidden; */
+  padding: 10px;
+  background: linear-gradient(to bottom, #68eacc 0%, #497be8 100%);
+}
+
+.content-wrapper {
+  background: #fff;
+  max-width: 400px;
+  width: 100%;
+  margin: 120px auto;
+  padding: 25px;
+  border-radius: 5px;
+  box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  font-size: 30px;
+  font-weight: 600;
+  margin-bottom: 1rem;
 }
 
 .todo {

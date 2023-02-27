@@ -1,7 +1,7 @@
 <template>
   <q-page class="page">
     <div class="content-wrapper">
-      <h1>Add Todo</h1>
+      <div class="header">Add Todo</div>
       <q-input outlined label="Title" v-model="title" />
       <q-input outlined label="Description" v-model="description" />
       <div>
@@ -14,16 +14,21 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import { createTodo } from 'src/services/todos.service';
+import { useRouter } from 'vue-router';
+import { ROUTE_NAMES } from 'src/router/routes';
 
 export default defineComponent({
   setup() {
     const title = ref('');
     const description = ref('');
+    const router = useRouter();
 
     const onAdd = async () => {
       if (title.value) {
         createTodo(title.value, description.value);
-        alert(`${title.value} added succesfully`);
+
+      router.push({ name: ROUTE_NAMES.TODOS.LIST });
+
       }
     };
     return { title, description, onAdd };
@@ -42,6 +47,18 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  background: #fff;
+  max-width: 400px;
+  width: 100%;
+  margin: 120px auto;
+  padding: 25px;
+  border-radius: 5px;
+  box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  font-size: 30px;
+  font-weight: 600;
 }
 
 .todo {
