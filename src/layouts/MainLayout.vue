@@ -1,13 +1,6 @@
 <template>
   <q-layout view="hHh lpR fFf" class="background">
-
-      <q-toolbar>
-        <q-toolbar-title class="title" @click="onHomeClick()">
-          Todo App
-        </q-toolbar-title>
-      </q-toolbar>
-
-
+    <div class="title" @click="onHomeClick()">Todo App</div>
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -41,13 +34,6 @@ export default defineComponent({
   font-size: 30px;
   font-weight: 600;
   color: white;
-  margin-top: 1rem;
-}
-
-
-
-.header {
-background-color: transparent;
 }
 
 .background {
